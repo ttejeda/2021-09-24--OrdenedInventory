@@ -8,10 +8,30 @@ export default class Inventory{
         let pos = this._searchByCode(product.getCode());
         if(pos == -1){
             this._inventory.push(product);
+            this._orderProducts();
             return true;
         }
 
         return false;
+    }
+
+    _orderProducts(){
+        if(this._inventory.length == 1){
+            return;
+        }
+        let product = this._inventory[this._inventory.length - 1];
+        let a;
+        for(let i = 0; i < this._inventory.length; i++){
+            if(i == this._inventory.length - 1){
+                this._inventory[i] = product;
+                return;
+            }
+            if(product.getCode() < this._inventory[i].getCode()){
+                a = this._inventory[i];
+                this._inventory[i] = product;
+                product = a;
+            }
+        }
     }
 
     _searchByCode(code){
